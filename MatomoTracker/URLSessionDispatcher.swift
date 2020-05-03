@@ -1,9 +1,9 @@
 import Foundation
 
 #if os(OSX)
-    import WebKit
+import WebKit
 #elseif os(iOS)
-    import WebKit
+import WebKit
 #endif
 
 public final class URLSessionDispatcher: Dispatcher {
@@ -12,9 +12,11 @@ public final class URLSessionDispatcher: Dispatcher {
     private let timeout: TimeInterval
     private let session: URLSession
     public let baseURL: URL
-
+    
     public private(set) var userAgent: String?
-
+    
+    public var logger: Logger = DefaultLogger(minLevel: .warning)
+    
     #if os(iOS)
     private static var webView: WKWebView?
     #endif
@@ -30,9 +32,12 @@ public final class URLSessionDispatcher: Dispatcher {
         self.timeout = timeout
         self.session = URLSession.shared
         if let userAgent = userAgent {
+            logger.debug("Using defined userAgent: \(userAgent)")
             self.userAgent = userAgent
         } else {
+            logger.debug("Generating userAgent")
             URLSessionDispatcher.generateDefaultUserAgent() { [weak self] userAgent in
+                self?.logger.debug("userAgent generated: \(userAgent)")
                 self?.userAgent = userAgent
             }
         }
@@ -60,7 +65,7 @@ public final class URLSessionDispatcher: Dispatcher {
                 } else {
                     completion(userAgentSuffix)
                 }
-
+                
                 webView = nil
             }
             #elseif os(tvOS)
@@ -78,6 +83,7 @@ public final class URLSessionDispatcher: Dispatcher {
             return
         }
         let request = buildRequest(baseURL: baseURL, method: "POST", contentType: "application/json; charset=utf-8", body: jsonBody)
+        logger.verbose("Sending events \(events) to \(request.url) with header \(request.allHTTPHeaderFields)")
         send(request: request, success: success, failure: failure)
     }
     
