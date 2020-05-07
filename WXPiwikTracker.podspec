@@ -2,10 +2,10 @@ Pod::Spec.new do |spec|
   spec.name         = "WXPiwikTracker"
   spec.version      = "3.3.3"
   spec.summary      = "A Piwik tracker written in Objective-C for iOS and OSX apps."
-  spec.homepage     = "https://github.com/piwik/piwik-sdk-ios/"
+  spec.homepage     = "https://github.com/matomo-org/matomo-sdk-ios"
   spec.license      = { :type => 'MIT', :file => 'LICENSE.md' }
   spec.author       = { "Mattias Levin" => "mattias.levin@gmail.com" }
-  spec.source       = { :git => "https://github.com/LisonFan/piwik-sdk-ios.git", :tag => "v#{spec.version}" }
+  spec.source       = { :git => "https://github.com/LisonFan/matomo-sdk-ios", :tag => "v#{spec.version}" }
   spec.ios.deployment_target = '7.0'
   spec.osx.deployment_target = '10.8'
   spec.requires_arc = true
